@@ -1,0 +1,17 @@
+image: docker:1.12
+services:
+    - docker:dind
+build_image:
+  script:
+    - docker -v
+    - docker build -t gitlab.algo-factory.com:5005/docker/nginx:default default
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN gitlab.algo-factory.com:5005
+    - docker push gitlab.algo-factory.com:5005/docker/nginx:default
+
+    - docker build -t gitlab.algo-factory.com:5005/docker/nginx:silex silex
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN gitlab.algo-factory.com:5005
+    - docker push gitlab.algo-factory.com:5005/docker/nginx:silex
+
+    - docker build -t gitlab.algo-factory.com:5005/docker/nginx:symfony symfony
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN gitlab.algo-factory.com:5005
+    - docker push gitlab.algo-factory.com:5005/docker/nginx:symfony
